@@ -20,15 +20,21 @@ class ClassRegistryItem {
             return undefined;
         }
         if (lodash_1.isFunction(this.instanceConstructor)) {
-            return Reflect.construct(this.instanceConstructor, args || []);
+            return this.extendInstance(Reflect.construct(this.instanceConstructor, args || []));
         }
         if (lodash_1.isFunction(this.instanceCreator)) {
-            return this.instanceCreator.call(undefined);
+            return this.extendInstance(this.instanceCreator.call(undefined));
         }
         if (this.singleton) {
-            return this.instance;
+            return this.extendInstance(this.instance);
         }
         return undefined;
+    }
+    extendInstance(instance) {
+        if (lodash_1.isFunction(this.instanceExtending)) {
+            return this.instanceExtending.apply(undefined, [instance]);
+        }
+        return instance;
     }
     make(arg) {
         if (this.singleton && this.instance) {

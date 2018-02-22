@@ -9,7 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
 const lib_1 = require("../../lib");
 describe('ClassRegistryItem', function () {
-    describe('private createInstance', function () {
+    describe('private .createInstance()', function () {
         let Original = class Original {
         };
         Original.className = 'Original';
@@ -85,6 +85,30 @@ describe('ClassRegistryItem', function () {
             classRegistryItem.instanceCreator = undefined;
             classRegistryItem.singleton = false;
             expect(classRegistryItem['createInstance']()).toBeUndefined();
+        });
+    });
+    describe('private .extendInstance()', function () {
+        it('does nothing, just return instance if there is no instanceExtending', function () {
+            const classRegistryItem = lib_1.ClassRegistry.findOrFail('Test');
+            expect(classRegistryItem['extendInstance']('test') === 'test').toBe(true);
+            expect(classRegistryItem['extendInstance'](1) === 1).toBe(true);
+            const instance = {};
+            expect(classRegistryItem['extendInstance'](instance) === instance).toBe(true);
+        });
+        it('passes instance to instanceExtending() and returns result', function () {
+            const classRegistryItem = lib_1.ClassRegistry.findOrFail('Test');
+            class WrappedClass {
+                constructor(instance) {
+                    this.instance = instance;
+                }
+            }
+            const instance = {};
+            classRegistryItem.instanceExtending = function (arg) {
+                return new WrappedClass(arg);
+            };
+            expect(classRegistryItem['extendInstance'](instance) === instance).toBe(false);
+            expect(classRegistryItem['extendInstance'](instance)).toBeInstanceOf(WrappedClass);
+            expect(classRegistryItem['extendInstance'](instance)['instance'] === instance).toBe(true);
         });
     });
 });

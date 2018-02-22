@@ -2,6 +2,7 @@ import { ClassRegistry } from './../core/ClassRegistry'
 import { isFunction } from 'lodash'
 
 export type InstanceCreator = () => any
+export type InstanceExtending = (instance: any) => any
 
 export class ClassRegistryItem {
   className: string
@@ -10,6 +11,7 @@ export class ClassRegistryItem {
   concreteClassName?: string | undefined
   instanceConstructor?: { new (): any }
   instanceCreator?: InstanceCreator
+  instanceExtending?: InstanceExtending
   instance?: any
 
   public constructor(
@@ -37,15 +39,22 @@ export class ClassRegistryItem {
       return undefined
     }
     if (isFunction(this.instanceConstructor)) {
-      return Reflect.construct(this.instanceConstructor, args || [])
+      return this.extendInstance(Reflect.construct(this.instanceConstructor, args || []))
     }
     if (isFunction(this.instanceCreator)) {
-      return this.instanceCreator.call(undefined)
+      return this.extendInstance(this.instanceCreator.call(undefined))
     }
     if (this.singleton) {
-      return this.instance
+      return this.extendInstance(this.instance)
     }
     return undefined
+  }
+
+  private extendInstance(instance: any): any {
+    if (isFunction(this.instanceExtending)) {
+      return this.instanceExtending.apply(undefined, [instance])
+    }
+    return instance
   }
 
   /*

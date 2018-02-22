@@ -2,7 +2,7 @@ import 'jest'
 import { bind, register, ClassRegistry } from '../../lib'
 
 describe('ClassRegistryItem', function() {
-  describe('private createInstance', function() {
+  describe('private .createInstance()', function() {
     @register()
     class Original {
       static className = 'Original'
@@ -81,6 +81,34 @@ describe('ClassRegistryItem', function() {
       classRegistryItem.instanceCreator = undefined
       classRegistryItem.singleton = false
       expect(classRegistryItem['createInstance']()).toBeUndefined()
+    })
+  })
+
+  describe('private .extendInstance()', function() {
+    it('does nothing, just return instance if there is no instanceExtending', function() {
+      const classRegistryItem = ClassRegistry.findOrFail('Test')
+      expect(classRegistryItem['extendInstance']('test') === 'test').toBe(true)
+      expect(classRegistryItem['extendInstance'](1) === 1).toBe(true)
+      const instance = {}
+      expect(classRegistryItem['extendInstance'](instance) === instance).toBe(true)
+    })
+
+    it('passes instance to instanceExtending() and returns result', function() {
+      const classRegistryItem = ClassRegistry.findOrFail('Test')
+      class WrappedClass {
+        instance: any
+
+        constructor(instance: any) {
+          this.instance = instance
+        }
+      }
+      const instance = {}
+      classRegistryItem.instanceExtending = function(arg: any) {
+        return new WrappedClass(arg)
+      }
+      expect(classRegistryItem['extendInstance'](instance) === instance).toBe(false)
+      expect(classRegistryItem['extendInstance'](instance)).toBeInstanceOf(WrappedClass)
+      expect(classRegistryItem['extendInstance'](instance)['instance'] === instance).toBe(true)
     })
   })
 })
