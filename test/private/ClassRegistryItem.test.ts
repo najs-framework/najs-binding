@@ -1,11 +1,16 @@
 import 'jest'
-import { bind, register, ClassRegistry } from '../../lib'
+import { bind, register, singleton, ClassRegistry } from '../../lib'
 
 describe('ClassRegistryItem', function() {
   describe('private .createInstance()', function() {
     @register()
     class Original {
       static className = 'Original'
+      value?: string
+
+      constructor(value?: string) {
+        this.value = value
+      }
     }
     it('returns undefined if there is concreteClassName but concreteClass not register yet', function() {
       class Final1 {
@@ -26,12 +31,14 @@ describe('ClassRegistryItem', function() {
 
     it('returns createInstance of ClassRegistryItem with concreteClassName', function() {
       @register()
-      class Final {
+      class Final extends Original {
         static className = 'Final'
       }
 
       bind(Original.className, Final.className)
       expect(ClassRegistry.findOrFail(Original.className)['createInstance']()).toBeInstanceOf(Final)
+      const instance = ClassRegistry.findOrFail(Original.className)['createInstance'](['test'])
+      expect(instance.value).toEqual('test')
     })
 
     it('creates instance from instanceConstructor if it set', function() {
@@ -109,6 +116,39 @@ describe('ClassRegistryItem', function() {
       expect(classRegistryItem['extendInstance'](instance) === instance).toBe(false)
       expect(classRegistryItem['extendInstance'](instance)).toBeInstanceOf(WrappedClass)
       expect(classRegistryItem['extendInstance'](instance)['instance'] === instance).toBe(true)
+    })
+
+    it('just extends and wrap singleton 1 times', function() {
+      @singleton()
+      class Singleton1 {
+        static className = 'Singleton1'
+        value: any
+
+        constructor(value: any) {
+          this.value = value
+        }
+      }
+
+      class WrappedClass {
+        instance: any
+
+        constructor(instance: any) {
+          this.instance = instance
+        }
+      }
+      const classRegistryItem = ClassRegistry.findOrFail(Singleton1.className)
+      classRegistryItem.instanceExtending = function(arg: any) {
+        return new WrappedClass(arg)
+      }
+      const instance = classRegistryItem.make()
+      expect(instance).toBeInstanceOf(WrappedClass)
+      expect(instance['instance']).toBeInstanceOf(Singleton1)
+
+      expect(classRegistryItem.make() === instance).toBe(true)
+      expect(classRegistryItem.make() === instance).toBe(true)
+      expect(classRegistryItem.make() === instance).toBe(true)
+      expect(classRegistryItem.make() === instance).toBe(true)
+      expect(classRegistryItem.make() === instance).toBe(true)
     })
   })
 })

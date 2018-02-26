@@ -11,6 +11,9 @@ const lib_1 = require("../../lib");
 describe('ClassRegistryItem', function () {
     describe('private .createInstance()', function () {
         let Original = class Original {
+            constructor(value) {
+                this.value = value;
+            }
         };
         Original.className = 'Original';
         Original = __decorate([
@@ -31,7 +34,7 @@ describe('ClassRegistryItem', function () {
             expect(lib_1.ClassRegistry.findOrFail(Original.className)['createInstance']()).toBeUndefined();
         });
         it('returns createInstance of ClassRegistryItem with concreteClassName', function () {
-            let Final = class Final {
+            let Final = class Final extends Original {
             };
             Final.className = 'Final';
             Final = __decorate([
@@ -39,6 +42,8 @@ describe('ClassRegistryItem', function () {
             ], Final);
             lib_1.bind(Original.className, Final.className);
             expect(lib_1.ClassRegistry.findOrFail(Original.className)['createInstance']()).toBeInstanceOf(Final);
+            const instance = lib_1.ClassRegistry.findOrFail(Original.className)['createInstance'](['test']);
+            expect(instance.value).toEqual('test');
         });
         it('creates instance from instanceConstructor if it set', function () {
             let Test = class Test {
@@ -109,6 +114,34 @@ describe('ClassRegistryItem', function () {
             expect(classRegistryItem['extendInstance'](instance) === instance).toBe(false);
             expect(classRegistryItem['extendInstance'](instance)).toBeInstanceOf(WrappedClass);
             expect(classRegistryItem['extendInstance'](instance)['instance'] === instance).toBe(true);
+        });
+        it('just extends and wrap singleton 1 times', function () {
+            let Singleton1 = class Singleton1 {
+                constructor(value) {
+                    this.value = value;
+                }
+            };
+            Singleton1.className = 'Singleton1';
+            Singleton1 = __decorate([
+                lib_1.singleton()
+            ], Singleton1);
+            class WrappedClass {
+                constructor(instance) {
+                    this.instance = instance;
+                }
+            }
+            const classRegistryItem = lib_1.ClassRegistry.findOrFail(Singleton1.className);
+            classRegistryItem.instanceExtending = function (arg) {
+                return new WrappedClass(arg);
+            };
+            const instance = classRegistryItem.make();
+            expect(instance).toBeInstanceOf(WrappedClass);
+            expect(instance['instance']).toBeInstanceOf(Singleton1);
+            expect(classRegistryItem.make() === instance).toBe(true);
+            expect(classRegistryItem.make() === instance).toBe(true);
+            expect(classRegistryItem.make() === instance).toBe(true);
+            expect(classRegistryItem.make() === instance).toBe(true);
+            expect(classRegistryItem.make() === instance).toBe(true);
         });
     });
 });

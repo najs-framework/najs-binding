@@ -34,7 +34,7 @@ export class ClassRegistryItem {
   private createInstance(args?: any[]): any {
     if (this.concreteClassName) {
       if (ClassRegistry.has(this.concreteClassName)) {
-        return ClassRegistry.findOrFail(this.concreteClassName).createInstance()
+        return ClassRegistry.findOrFail(this.concreteClassName).createInstance(args)
       }
       return undefined
     }

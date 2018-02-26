@@ -15,7 +15,7 @@ class ClassRegistryItem {
     createInstance(args) {
         if (this.concreteClassName) {
             if (ClassRegistry_1.ClassRegistry.has(this.concreteClassName)) {
-                return ClassRegistry_1.ClassRegistry.findOrFail(this.concreteClassName).createInstance();
+                return ClassRegistry_1.ClassRegistry.findOrFail(this.concreteClassName).createInstance(args);
             }
             return undefined;
         }
