@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const ClassRegistry_1 = require("./../core/ClassRegistry");
+const ClassRegistry_1 = require("../core/ClassRegistry");
 const lodash_1 = require("lodash");
 class ClassRegistryItem {
     constructor(className, instanceConstructor, instanceCreator, instance, overridable, singleton) {
@@ -14,10 +14,9 @@ class ClassRegistryItem {
     }
     createInstance(args) {
         if (this.concreteClassName) {
-            if (ClassRegistry_1.ClassRegistry.has(this.concreteClassName)) {
-                return ClassRegistry_1.ClassRegistry.findOrFail(this.concreteClassName).createInstance(args);
-            }
-            return undefined;
+            return ClassRegistry_1.ClassRegistry.has(this.concreteClassName)
+                ? ClassRegistry_1.ClassRegistry.findOrFail(this.concreteClassName).createInstance(args)
+                : undefined;
         }
         if (lodash_1.isFunction(this.instanceConstructor)) {
             return this.extendInstance(Reflect.construct(this.instanceConstructor, args || []));

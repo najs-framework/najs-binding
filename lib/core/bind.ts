@@ -12,24 +12,11 @@ export function bind(className: string, instanceCreator: InstanceCreator): void
 export function bind(className: string, concrete: string): void
 export function bind(abstract: string, concrete?: string | InstanceCreator): any {
   if (typeof concrete === 'undefined') {
-    return function decorator(target: any): any {
-      const targetName = get_class_name(target)
-      if (!ClassRegistry.has(targetName)) {
-        register(target, targetName)
-      }
-      bind(abstract, targetName)
-    }
+    return create_decorator(abstract)
   }
 
   if (ClassRegistry.has(abstract)) {
-    ClassRegistry.assertRegistryItemCouldBeUpdated(abstract)
-    const item: ClassRegistryItem = ClassRegistry.findOrFail(abstract)
-    if (isFunction(concrete)) {
-      item.instanceCreator = concrete
-      return ClassRegistry.register(item)
-    }
-    item.concreteClassName = concrete
-    return ClassRegistry.register(item)
+    return update_concrete(abstract, concrete)
   }
 
   const item: ClassRegistryItem = new ClassRegistryItem(
@@ -44,4 +31,25 @@ export function bind(abstract: string, concrete?: string | InstanceCreator): any
     item.concreteClassName = concrete
   }
   return ClassRegistry.register(item)
+}
+
+function update_concrete(abstract: string, concrete?: string | InstanceCreator) {
+  ClassRegistry.assertRegistryItemCouldBeUpdated(abstract)
+  const item: ClassRegistryItem = ClassRegistry.findOrFail(abstract)
+  if (isFunction(concrete)) {
+    item.instanceCreator = concrete
+    return ClassRegistry.register(item)
+  }
+  item.concreteClassName = concrete
+  return ClassRegistry.register(item)
+}
+
+function create_decorator(abstract: string) {
+  return function decorator(target: any): any {
+    const targetName = get_class_name(target)
+    if (!ClassRegistry.has(targetName)) {
+      register(target, targetName)
+    }
+    bind(abstract, targetName)
+  }
 }

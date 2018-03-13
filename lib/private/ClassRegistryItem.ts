@@ -1,4 +1,4 @@
-import { ClassRegistry } from './../core/ClassRegistry'
+import { ClassRegistry } from '../core/ClassRegistry'
 import { isFunction } from 'lodash'
 
 export type InstanceCreator = () => any
@@ -33,10 +33,9 @@ export class ClassRegistryItem {
 
   private createInstance(args?: any[]): any {
     if (this.concreteClassName) {
-      if (ClassRegistry.has(this.concreteClassName)) {
-        return ClassRegistry.findOrFail(this.concreteClassName).createInstance(args)
-      }
-      return undefined
+      return ClassRegistry.has(this.concreteClassName)
+        ? ClassRegistry.findOrFail(this.concreteClassName).createInstance(args)
+        : undefined
     }
     if (isFunction(this.instanceConstructor)) {
       return this.extendInstance(Reflect.construct(this.instanceConstructor, args || []))
