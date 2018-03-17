@@ -1,4 +1,4 @@
-import { get_class_name } from '../private/get_class_name'
+import { getClassName } from './getClassName'
 import { ClassRegistry } from './ClassRegistry'
 
 /**
@@ -42,5 +42,5 @@ export function make(classDefinition: any, args: any[]): any
  */
 export function make<T>(className: any, args: any[]): T
 export function make(className: any, data?: Object | any[]): any {
-  return ClassRegistry.findOrFail(get_class_name(className)).make(<any>data)
+  return ClassRegistry.findOrFail(getClassName(className)).make(<any>data)
 }

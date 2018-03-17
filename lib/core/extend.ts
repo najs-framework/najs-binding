@@ -1,7 +1,7 @@
 import { register } from './register'
 import { ClassRegistry } from './ClassRegistry'
 import { ClassRegistryItem } from '../private/ClassRegistryItem'
-import { get_class_name } from '../private/get_class_name'
+import { getClassName } from './getClassName'
 import { isFunction } from 'lodash'
 
 export type Decorator = (target: any) => any
@@ -20,7 +20,7 @@ export function extend(abstract: Function | string, extendingFunction?: Instance
     }
   }
 
-  const className = get_class_name(abstract)
+  const className = getClassName(abstract)
   if (isFunction(abstract) && !ClassRegistry.has(className)) {
     register(abstract, className)
   }

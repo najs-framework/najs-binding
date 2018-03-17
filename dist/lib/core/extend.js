@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const register_1 = require("./register");
 const ClassRegistry_1 = require("./ClassRegistry");
-const get_class_name_1 = require("../private/get_class_name");
+const getClassName_1 = require("./getClassName");
 const lodash_1 = require("lodash");
 function extend(abstract, extendingFunction) {
     if (typeof extendingFunction === 'undefined') {
@@ -12,7 +12,7 @@ function extend(abstract, extendingFunction) {
             });
         };
     }
-    const className = get_class_name_1.get_class_name(abstract);
+    const className = getClassName_1.getClassName(abstract);
     if (lodash_1.isFunction(abstract) && !ClassRegistry_1.ClassRegistry.has(className)) {
         register_1.register(abstract, className);
     }

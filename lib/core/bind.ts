@@ -1,7 +1,7 @@
 import { ClassRegistry } from './ClassRegistry'
 import { ClassRegistryItem } from '../private/ClassRegistryItem'
 import { isString, isFunction } from 'lodash'
-import { get_class_name } from '../private/get_class_name'
+import { getClassName } from './getClassName'
 import { register } from './register'
 
 export type Decorator = (target: any) => any
@@ -46,7 +46,7 @@ function update_concrete(abstract: string, concrete?: string | InstanceCreator) 
 
 function create_decorator(abstract: string) {
   return function decorator(target: any): any {
-    const targetName = get_class_name(target)
+    const targetName = getClassName(target)
     if (!ClassRegistry.has(targetName)) {
       register(target, targetName)
     }

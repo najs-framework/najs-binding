@@ -6,3 +6,4 @@ export { autoload } from './core/autoload';
 export { extend, InstanceExtending } from './core/extend';
 export { ClassRegistry } from './core/ClassRegistry';
 export { IAutoload, IAutoloadMetadata } from './core/IAutoload';
+export { getClassName } from './core/getClassName';

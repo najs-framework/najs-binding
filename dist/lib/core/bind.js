@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const ClassRegistry_1 = require("./ClassRegistry");
 const ClassRegistryItem_1 = require("../private/ClassRegistryItem");
 const lodash_1 = require("lodash");
-const get_class_name_1 = require("../private/get_class_name");
+const getClassName_1 = require("./getClassName");
 const register_1 = require("./register");
 function bind(abstract, concrete) {
     if (typeof concrete === 'undefined') {
@@ -31,7 +31,7 @@ function update_concrete(abstract, concrete) {
 }
 function create_decorator(abstract) {
     return function decorator(target) {
-        const targetName = get_class_name_1.get_class_name(target);
+        const targetName = getClassName_1.getClassName(target);
         if (!ClassRegistry_1.ClassRegistry.has(targetName)) {
             register_1.register(target, targetName);
         }

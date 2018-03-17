@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const lodash_1 = require("lodash");
-function get_class_name(classDefinition, allowString = true) {
+function getClassName(classDefinition, allowString = true) {
     if (allowString && lodash_1.isString(classDefinition)) {
         return classDefinition;
     }
@@ -13,4 +13,4 @@ function get_class_name(classDefinition, allowString = true) {
     }
     throw new TypeError('Please define "className" or "getClassName" for ' + classDefinition);
 }
-exports.get_class_name = get_class_name;
+exports.getClassName = getClassName;

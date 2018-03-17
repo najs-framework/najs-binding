@@ -1,4 +1,4 @@
-import { get_class_name } from '../private/get_class_name'
+import { getClassName } from './getClassName'
 import { ClassRegistryItem } from '../private/ClassRegistryItem'
 import { ClassRegistry } from './ClassRegistry'
 import { isString } from 'lodash'
@@ -61,7 +61,7 @@ export function register(
   }
 
   const item: ClassRegistryItem = new ClassRegistryItem(
-    className || get_class_name(classDefinition, false),
+    className || getClassName(classDefinition, false),
     classDefinition,
     undefined,
     undefined,

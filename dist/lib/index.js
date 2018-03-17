@@ -14,3 +14,5 @@ var extend_1 = require("./core/extend");
 exports.extend = extend_1.extend;
 var ClassRegistry_1 = require("./core/ClassRegistry");
 exports.ClassRegistry = ClassRegistry_1.ClassRegistry;
+var getClassName_1 = require("./core/getClassName");
+exports.getClassName = getClassName_1.getClassName;
