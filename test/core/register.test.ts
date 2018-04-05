@@ -51,6 +51,7 @@ describe('register()', function() {
 
     it('can registry a class definition with Function.name if OBFUSCABLE_CHECK not found', function() {
       delete process.env.OBFUSCABLE_CHECK
+      process.env.OBFUSCABLE_WARNING = 'FALSE'
       function TestFunctionName() {}
       register(TestFunctionName)
       expect(ClassRegistry.findOrFail('TestFunctionName')).toEqual({

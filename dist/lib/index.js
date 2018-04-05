@@ -16,3 +16,4 @@ var ClassRegistry_1 = require("./core/ClassRegistry");
 exports.ClassRegistry = ClassRegistry_1.ClassRegistry;
 var getClassName_1 = require("./core/getClassName");
 exports.getClassName = getClassName_1.getClassName;
+exports.setLogger = getClassName_1.setLogger;
