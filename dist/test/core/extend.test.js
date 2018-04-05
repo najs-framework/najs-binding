@@ -11,7 +11,7 @@ const ClassRegistry_1 = require("../../lib/core/ClassRegistry");
 const register_1 = require("../../lib/core/register");
 const make_1 = require("../../lib/core/make");
 const extend_1 = require("../../lib/core/extend");
-describe('Najs.extend', function () {
+describe('extend()', function () {
     describe('@extend(className: string)', function () {
         it('should return decorator if 2nd param is missing', function () {
             expect(typeof extend_1.extend('Test1') === 'function').toBe(true);

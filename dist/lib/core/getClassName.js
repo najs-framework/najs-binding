@@ -11,6 +11,9 @@ function getClassName(classDefinition, allowString = true) {
     if (lodash_1.isString(classDefinition.className)) {
         return classDefinition.className;
     }
+    if (!process.env.OBFUSCABLE_CHECK) {
+        return classDefinition.name;
+    }
     throw new TypeError('Please define "className" or "getClassName" for ' + classDefinition);
 }
 exports.getClassName = getClassName;

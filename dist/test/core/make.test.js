@@ -46,7 +46,7 @@ class TestInstanceWithData {
         return instance;
     }
 }
-describe('Najs.make', function () {
+describe('make()', function () {
     lib_1.register(Test);
     it('throws an ReferenceError if the class definition was not register', function () {
         try {

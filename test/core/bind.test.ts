@@ -3,7 +3,7 @@ import { ClassRegistry } from '../../lib/core/ClassRegistry'
 import { register } from '../../lib/core/register'
 import { bind } from '../../lib/core/bind'
 
-describe('Najs.bind', function() {
+describe('bind()', function() {
   describe('@bind(bindToClassName: string)', function() {
     it('should return decorator if 2nd param is missing, and bind Target to bindToClassName', function() {
       class Test1 {

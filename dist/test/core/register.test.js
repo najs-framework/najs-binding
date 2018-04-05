@@ -18,8 +18,9 @@ class TestClassName {
 TestClassName.className = 'TestClassName';
 class Invalid {
 }
-describe('Najs.register', function () {
-    it('throws an TypeError if the class definition not implemented IAutoload or has no className', function () {
+describe('register()', function () {
+    it('throws an TypeError if the class definition not implemented IAutoload or has no className if OBFUSCABLE_CHECK is on', function () {
+        process.env.OBFUSCABLE_CHECK = true;
         try {
             expect(lib_1.register(Invalid));
         }
@@ -40,11 +41,22 @@ describe('Najs.register', function () {
                 singleton: false
             });
         });
-        it('can registry a class definition get value of property Class.className', function () {
+        it('can registry a class definition with value of property Class.className', function () {
             lib_1.register(TestClassName);
             expect(lib_1.ClassRegistry.findOrFail('TestClassName')).toEqual({
                 className: 'TestClassName',
                 instanceConstructor: TestClassName,
+                overridable: true,
+                singleton: false
+            });
+        });
+        it('can registry a class definition with Function.name if OBFUSCABLE_CHECK not found', function () {
+            delete process.env.OBFUSCABLE_CHECK;
+            function TestFunctionName() { }
+            lib_1.register(TestFunctionName);
+            expect(lib_1.ClassRegistry.findOrFail('TestFunctionName')).toEqual({
+                className: 'TestFunctionName',
+                instanceConstructor: TestFunctionName,
                 overridable: true,
                 singleton: false
             });

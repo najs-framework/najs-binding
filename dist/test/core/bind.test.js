@@ -10,7 +10,7 @@ require("jest");
 const ClassRegistry_1 = require("../../lib/core/ClassRegistry");
 const register_1 = require("../../lib/core/register");
 const bind_1 = require("../../lib/core/bind");
-describe('Najs.bind', function () {
+describe('bind()', function () {
     describe('@bind(bindToClassName: string)', function () {
         it('should return decorator if 2nd param is missing, and bind Target to bindToClassName', function () {
             class Test1 {

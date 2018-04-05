@@ -3,7 +3,7 @@ import * as Sinon from 'sinon'
 import * as Register from '../../lib/core/register'
 import { singleton } from '../../lib/core/singleton'
 
-describe('Najs.singleton', function() {
+describe('singleton()', function() {
   it('just a shortcut of register()', function() {})
 
   it('always passes true to singleton param of register()', function() {

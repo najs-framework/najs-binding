@@ -10,7 +10,7 @@ require("jest");
 const Sinon = require("sinon");
 const Register = require("../../lib/core/register");
 const singleton_1 = require("../../lib/core/singleton");
-describe('Najs.singleton', function () {
+describe('singleton()', function () {
     it('just a shortcut of register()', function () { });
     it('always passes true to singleton param of register()', function () {
         const spy = Sinon.spy(Register, 'register');

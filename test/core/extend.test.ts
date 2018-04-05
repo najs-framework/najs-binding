@@ -4,7 +4,7 @@ import { register } from '../../lib/core/register'
 import { make } from '../../lib/core/make'
 import { extend } from '../../lib/core/extend'
 
-describe('Najs.extend', function() {
+describe('extend()', function() {
   describe('@extend(className: string)', function() {
     it('should return decorator if 2nd param is missing', function() {
       expect(typeof extend('Test1') === 'function').toBe(true)

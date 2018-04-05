@@ -58,7 +58,7 @@ class TestInstanceWithData implements IAutoload {
   }
 }
 
-describe('Najs.make', function() {
+describe('make()', function() {
   register(Test)
 
   it('throws an ReferenceError if the class definition was not register', function() {
