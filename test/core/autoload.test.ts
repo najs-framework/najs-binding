@@ -14,7 +14,7 @@ export class Repository {
   constructor(metadata: Object)
   constructor(metadata?: Object) {
     if (metadata) {
-      this['__autoloadMetadata'] = metadata
+      this['__autoloadContext'] = metadata
     }
   }
 
@@ -29,7 +29,7 @@ export class CustomMetadataRepository {
   @autoload(Model.className) model: Model
 
   constructor(metadata?: Object) {
-    this['__autoloadMetadata'] = { diff: 'yes' }
+    this['__autoloadContext'] = { diff: 'yes' }
   }
 
   getSomething() {
@@ -47,7 +47,7 @@ export class TestAutoloadPropertyDecorator {
   constructor(metadata: Object)
   constructor(metadata?: Object) {
     if (metadata) {
-      this['__autoloadMetadata'] = metadata
+      this['__autoloadContext'] = metadata
     }
   }
 
@@ -92,18 +92,18 @@ describe('@autoload', function() {
   it('passes autoload metadata to the instances which are autoload', function() {
     const metadata = { meta: 'anything' }
     const hosted = new TestAutoloadPropertyDecorator(metadata)
-    expect(hosted.repository['__autoloadMetadata'] === metadata).toBe(true)
-    expect(hosted.repository.model['__autoloadMetadata'] === metadata).toBe(true)
+    expect(hosted.repository['__autoloadContext'] === metadata).toBe(true)
+    expect(hosted.repository.model['__autoloadContext'] === metadata).toBe(true)
   })
 
   it('merges autoload metadata if metadata in tree have different', function() {
     const metadata = { meta: 'anything' }
     const hosted = new TestAutoloadPropertyDecorator(metadata)
-    expect(hosted.customMetadataRepository['__autoloadMetadata']).toEqual({
+    expect(hosted.customMetadataRepository['__autoloadContext']).toEqual({
       meta: 'anything',
       diff: 'yes'
     })
-    expect(hosted.customMetadataRepository.model['__autoloadMetadata']).toEqual({
+    expect(hosted.customMetadataRepository.model['__autoloadContext']).toEqual({
       meta: 'anything',
       diff: 'yes'
     })

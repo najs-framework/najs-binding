@@ -15,7 +15,7 @@ exports.Model = Model;
 class Repository {
     constructor(metadata) {
         if (metadata) {
-            this['__autoloadMetadata'] = metadata;
+            this['__autoloadContext'] = metadata;
         }
     }
     getSomething() {
@@ -29,7 +29,7 @@ __decorate([
 exports.Repository = Repository;
 class CustomMetadataRepository {
     constructor(metadata) {
-        this['__autoloadMetadata'] = { diff: 'yes' };
+        this['__autoloadContext'] = { diff: 'yes' };
     }
     getSomething() {
         return 'something';
@@ -43,7 +43,7 @@ exports.CustomMetadataRepository = CustomMetadataRepository;
 class TestAutoloadPropertyDecorator {
     constructor(metadata) {
         if (metadata) {
-            this['__autoloadMetadata'] = metadata;
+            this['__autoloadContext'] = metadata;
         }
     }
     getSomething() {
@@ -90,17 +90,17 @@ describe('@autoload', function () {
     it('passes autoload metadata to the instances which are autoload', function () {
         const metadata = { meta: 'anything' };
         const hosted = new TestAutoloadPropertyDecorator(metadata);
-        expect(hosted.repository['__autoloadMetadata'] === metadata).toBe(true);
-        expect(hosted.repository.model['__autoloadMetadata'] === metadata).toBe(true);
+        expect(hosted.repository['__autoloadContext'] === metadata).toBe(true);
+        expect(hosted.repository.model['__autoloadContext'] === metadata).toBe(true);
     });
     it('merges autoload metadata if metadata in tree have different', function () {
         const metadata = { meta: 'anything' };
         const hosted = new TestAutoloadPropertyDecorator(metadata);
-        expect(hosted.customMetadataRepository['__autoloadMetadata']).toEqual({
+        expect(hosted.customMetadataRepository['__autoloadContext']).toEqual({
             meta: 'anything',
             diff: 'yes'
         });
-        expect(hosted.customMetadataRepository.model['__autoloadMetadata']).toEqual({
+        expect(hosted.customMetadataRepository.model['__autoloadContext']).toEqual({
             meta: 'anything',
             diff: 'yes'
         });

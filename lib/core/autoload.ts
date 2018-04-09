@@ -20,11 +20,11 @@ export function autoload(className: string): any {
           this.__autoload[className] = make(className)
         }
 
-        if (this.__autoloadMetadata) {
-          if (this.__autoload[className].__autoloadMetadata) {
-            Object.assign(this.__autoload[className].__autoloadMetadata, this.__autoloadMetadata)
+        if (this.__autoloadContext) {
+          if (this.__autoload[className].__autoloadContext) {
+            Object.assign(this.__autoload[className].__autoloadContext, this.__autoloadContext)
           } else {
-            this.__autoload[className].__autoloadMetadata = this.__autoloadMetadata
+            this.__autoload[className].__autoloadContext = this.__autoloadContext
           }
         }
         return this.__autoload[className]
