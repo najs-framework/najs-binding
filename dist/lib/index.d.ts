@@ -1,3 +1,4 @@
+/// <reference path="contracts/Autoload.d.ts" />
 export { make } from './core/make';
 export { bind, InstanceCreator } from './core/bind';
 export { register } from './core/register';

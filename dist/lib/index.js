@@ -1,4 +1,5 @@
 "use strict";
+/// <reference path="contracts/Autoload.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
 var make_1 = require("./core/make");
 exports.make = make_1.make;
