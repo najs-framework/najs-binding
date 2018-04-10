@@ -1,11 +1,11 @@
 declare namespace Najs.Contracts {
-    class AutoloadContext {
+    interface AutoloadContext {
         /**
          * The context object passed from a hosted class which use @autoload
          */
-        protected __autoloadContext: Object;
+        __autoloadContext: Object;
     }
-    interface Autoload extends AutoloadContext {
+    interface Autoload {
         /**
          * Get name of the class.
          */
