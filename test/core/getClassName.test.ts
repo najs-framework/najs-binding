@@ -26,6 +26,24 @@ describe('.getClassName()', function() {
     expect(getClassName(Test)).toEqual('className')
   })
 
+  it('can get className from the instance', function() {
+    class ClassDefinition {
+      static className = 'ClassDefinition'
+    }
+    expect(getClassName(new ClassDefinition())).toEqual('ClassDefinition')
+  })
+
+  it('throw an TypeError if could not resolve Definition from instance', function() {
+    try {
+      getClassName({})
+    } catch (error) {
+      expect(error).toBeInstanceOf(TypeError)
+      expect(error.message).toEqual('Can not find the constructor of [object Object]')
+      return
+    }
+    expect('should not reach here').toEqual('hum')
+  })
+
   describe('class which has no .getClassName() and static className', function() {
     it('returns Function.name process.env.OBFUSCABLE_CHECK is not set or falsy', function() {
       delete process.env.OBFUSCABLE_CHECK

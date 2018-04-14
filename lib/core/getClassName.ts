@@ -6,17 +6,29 @@ export let logger: {
   warn(...log: string[]): void
 } = console
 
-export function getClassName(classDefinition: any, allowString: boolean = true): string {
-  if (allowString && isString(classDefinition)) {
-    return classDefinition
+export function getClassName(input: any, allowString: boolean = true): string {
+  if (allowString && isString(input)) {
+    return input
   }
 
+  if (typeof input === 'object') {
+    const prototype = Object.getPrototypeOf(input)
+    if (prototype !== Object.prototype) {
+      return getClassName(prototype.constructor)
+    }
+    throw new TypeError('Can not find the constructor of ' + input)
+  }
+
+  return findClassNameByDefinition(input)
+}
+
+function findClassNameByDefinition(classDefinition: Function) {
   if (isFunction(classDefinition.prototype.getClassName)) {
     return classDefinition.prototype.getClassName.call(classDefinition)
   }
 
-  if (isString(classDefinition.className)) {
-    return classDefinition.className
+  if (isString(classDefinition['className'])) {
+    return classDefinition['className']
   }
 
   if (isFalsy(process.env.OBFUSCABLE_CHECK)) {
